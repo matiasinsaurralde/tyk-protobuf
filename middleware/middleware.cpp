@@ -4,10 +4,7 @@
 #include "tyk/coprocess_object.pb.h"
 using namespace std;
 
-struct CoProcessMessage {
-  void* p_data;
-  int length;
-};
+#include "middleware.h"
 
 void ProcessRequest_(struct CoProcessMessage* cp_object, struct CoProcessMessage* cp_output_object) {
   coprocess::Object object;
@@ -48,7 +45,12 @@ void ProcessRequest_(struct CoProcessMessage* cp_object, struct CoProcessMessage
 
 extern "C" {
   #include <stdio.h>
+  /*
   void ProcessRequest(struct CoProcessMessage* cp_object, struct CoProcessMessage* cp_output_object) {
     ProcessRequest_(cp_object, cp_output_object);
   }
+  */
+  void StandardProcessRequest() {
+    printf("processing request?\n");
+  };
 }
