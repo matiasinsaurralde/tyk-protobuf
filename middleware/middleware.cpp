@@ -74,6 +74,11 @@ struct CP_OUTPUT StandardProcessRequest_(void *data) {
   return out;
 }
 
+void DirectProcessRequest_(struct CP_OBJECT *object) {
+  std::string new_hook_name("thehook");
+  object->hook_name = (char*)new_hook_name.c_str();
+}
+
 extern "C" {
   #include <stdio.h>
 
@@ -83,7 +88,8 @@ extern "C" {
   };
 
   struct CP_OBJECT DirectProcessRequest(char* hook_name) {
-    struct CP_OBJECT out = {"the_hook"};
-    return out;
+    struct CP_OBJECT object = {hook_name};
+    DirectProcessRequest_(&object);
+    return object;
   };
 }
