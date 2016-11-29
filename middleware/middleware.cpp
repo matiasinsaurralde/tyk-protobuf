@@ -87,9 +87,9 @@ extern "C" {
     return out;
   };
 
-  struct CP_OBJECT DirectProcessRequest(char* hook_name) {
-    struct CP_OBJECT object = {hook_name};
-    DirectProcessRequest_(&object);
-    return object;
+  void DirectProcessRequest(struct CP_OBJECT *object) {
+    // struct CP_OBJECT object = {hook_name};
+    DirectProcessRequest_(object);
+    return;
   };
 }

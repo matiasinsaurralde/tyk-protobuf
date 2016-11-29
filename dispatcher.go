@@ -9,6 +9,7 @@ import "C"
 
 import (
 	"errors"
+	"unsafe"
 
 	"github.com/TykTechnologies/tyk/coprocess"
 	"github.com/golang/protobuf/proto"
@@ -48,11 +49,13 @@ func StandardProcessRequest(serializedObject []byte) (newObject coprocess.Object
 }
 
 func DirectProcessRequest(object *coprocess.Object) (newObject *coprocess.Object) {
-	// var CHookName *C.char
+	var nativeObject *C.struct_CP_OBJECT
+	nativeObject = (*C.struct_CP_OBJECT)(C.malloc(C.size_t(unsafe.Sizeof(C.struct_CP_OBJECT{}))))
 	bHookName := []byte(object.HookName)
 	CHookName := C.CBytes(bHookName)
-	outputObject := C.direct_process_request((*C.char)(CHookName))
-	// var bHookName = []byte(object.HookName)
-	object.HookName = C.GoString(outputObject.hook_name)
+	nativeObject.hook_name = (*C.char)(CHookName)
+
+	C.direct_process_request(nativeObject)
+	object.HookName = C.GoString(nativeObject.hook_name)
 	return object
 }

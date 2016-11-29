@@ -29,6 +29,6 @@ struct CP_OUTPUT standard_process_request(void* serialized_object) {
   return standard_process_request_sym(serialized_object);
 }
 
-struct CP_OBJECT direct_process_request(char* hook_name) {
-  return direct_process_request_sym(hook_name);
+void direct_process_request(struct CP_OBJECT* object) {
+  direct_process_request_sym(object);
 }
