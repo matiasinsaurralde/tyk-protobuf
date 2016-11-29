@@ -1,9 +1,15 @@
+
+
 static void* lib;
 typedef void (*mw_sym)(void);
 
-static mw_sym standard_process_request_sym;
+typedef struct CP_OUTPUT (*standard_process_request_t)(void*);
+static standard_process_request_t standard_process_request_sym;
+struct CP_OUTPUT standard_process_request(void*);
+
+typedef struct CP_OBJECT (*direct_process_request_t)(char*);
+static direct_process_request_t direct_process_request_sym;
+struct CP_OBJECT direct_process_request(char*);
 
 int load_middleware();
 int load_symbols();
-
-void standard_process_request();

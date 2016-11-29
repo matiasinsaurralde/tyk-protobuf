@@ -43,14 +43,44 @@ void ProcessRequest_(struct CoProcessMessage* cp_object, struct CoProcessMessage
 
 }
 
+struct CP_OUTPUT StandardProcessRequest_(void *data) {
+  // std::cout << "StandardProcessRequest (C++), got: " << std::endl;
+  // printf("%s\n", data);
+
+  coprocess::Object object;
+  std::string str((char*)data);
+  object.ParseFromString(str);
+
+  // std::cout << "Hook name is: " << object.hook_name() << std::endl;
+  // Alter hook name:
+  std::string new_hook_name("thehook");
+
+  object.set_hook_name(new_hook_name);
+
+  std::string modified_object_data;
+  object.SerializeToString(&modified_object_data);
+
+  int length = modified_object_data.length();
+  const char* modified_object_data_p = modified_object_data.c_str();
+
+  void* output_data = malloc(length);
+  memcpy(output_data, modified_object_data_p, length);
+
+  struct CP_OUTPUT out = {output_data, length};
+
+  return out;
+}
+
 extern "C" {
   #include <stdio.h>
-  /*
-  void ProcessRequest(struct CoProcessMessage* cp_object, struct CoProcessMessage* cp_output_object) {
-    ProcessRequest_(cp_object, cp_output_object);
-  }
-  */
-  void StandardProcessRequest() {
-    printf("processing request?\n");
+
+  struct CP_OUTPUT StandardProcessRequest(void* serialized_object) {
+    struct CP_OUTPUT out = StandardProcessRequest_(serialized_object);
+    return out;
+  };
+
+  struct CP_OBJECT DirectProcessRequest(char* hook_name) {
+    struct CP_OBJECT out = {"the_hook"};
+    return out;
   };
 }
