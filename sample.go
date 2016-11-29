@@ -54,5 +54,13 @@ func main() {
 		DirectProcessRequest(&object)
 		w.Write([]byte(object.HookName))
 	})
+
+	http.HandleFunc("/c", func(w http.ResponseWriter, r *http.Request) {
+		object := coprocess.Object{
+			HookName: "myhook",
+		}
+		object.HookName = "thehook"
+		w.Write([]byte(object.HookName))
+	})
 	http.ListenAndServe(":5555", nil)
 }

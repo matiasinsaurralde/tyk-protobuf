@@ -48,9 +48,11 @@ func StandardProcessRequest(serializedObject []byte) (newObject coprocess.Object
 }
 
 func DirectProcessRequest(object *coprocess.Object) (newObject *coprocess.Object) {
-	var CHookName *C.char
-	CHookName = C.CString(object.HookName)
-	outputObject := C.direct_process_request(CHookName)
+	// var CHookName *C.char
+	bHookName := []byte(object.HookName)
+	CHookName := C.CBytes(bHookName)
+	outputObject := C.direct_process_request((*C.char)(CHookName))
+	// var bHookName = []byte(object.HookName)
 	object.HookName = C.GoString(outputObject.hook_name)
 	return object
 }
