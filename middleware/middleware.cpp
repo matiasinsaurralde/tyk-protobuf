@@ -6,6 +6,9 @@ using namespace std;
 
 #include "middleware.h"
 
+#include <google/protobuf/arena.h>
+google::protobuf::Arena arena;
+
 void ProcessRequest_(struct CoProcessMessage* cp_object, struct CoProcessMessage* cp_output_object) {
   coprocess::Object object;
 
@@ -47,18 +50,18 @@ struct CP_OUTPUT StandardProcessRequest_(void *data) {
   // std::cout << "StandardProcessRequest (C++), got: " << std::endl;
   // printf("%s\n", data);
 
-  coprocess::Object object;
+  coprocess::Object* object = google::protobuf::Arena::CreateMessage<coprocess::Object>(&arena);
   std::string str((char*)data);
-  object.ParseFromString(str);
+  object->ParseFromString(str);
 
   // std::cout << "Hook name is: " << object.hook_name() << std::endl;
   // Alter hook name:
   std::string new_hook_name("thehook");
 
-  object.set_hook_name(new_hook_name);
+  object->set_hook_name(new_hook_name);
 
   std::string modified_object_data;
-  object.SerializeToString(&modified_object_data);
+  object->SerializeToString(&modified_object_data);
 
   int length = modified_object_data.length();
   const char* modified_object_data_p = modified_object_data.c_str();
