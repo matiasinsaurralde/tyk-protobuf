@@ -25,7 +25,7 @@ func init() {
 	}
 }
 
-func BenchmarkStandardApproach(b *testing.B) {
+func BenchmarkSerialization(b *testing.B) {
 	object := coprocess.Object{
 		HookName: "myhook",
 	}
@@ -36,7 +36,7 @@ func BenchmarkStandardApproach(b *testing.B) {
 	}
 }
 
-func BenchmarkDirectApproach(b *testing.B) {
+func BenchmarkNoSerialization(b *testing.B) {
 	object := coprocess.Object{
 		HookName: "myhook",
 	}
