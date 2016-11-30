@@ -1,0 +1,4 @@
+https://github.com/plar/btrfs/blob/master/ioctl/mappings.go
+
+https://utcc.utoronto.ca/~cks/space/blog/programming/GoCGoCompatibleStructs
+
